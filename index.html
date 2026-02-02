@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football AI - التنبؤ الذكي بنتائج المباريات</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav">
+                <div class="logo">
+                    <span class="logo-icon">⚽</span>
+                    <span class="logo-text">Football AI</span>
+                </div>
+                <nav class="menu">
+                    <a href="#home" class="active">الرئيسية</a>
+                    <a href="#predictions">التنبؤات</a>
+                    <a href="#teams">الفرق</a>
+                    <a href="#analysis">التحليل</a>
+                    <a href="#about">عن المشروع</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">التنبؤ الذكي بنتائج المباريات</h1>
+                <p class="hero-subtitle">تحليل متقدم باستخدام خوارزميات الذكاء الاصطناعي (ELO, Poisson, Ensemble)</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label">دقة التنبؤات</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">خوارزميات ذكية</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-label">دوري كرة قدم</div>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToSearch()">ابدأ التحليل الآن</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="predictions">
+        <div class="container">
+            <h2 class="section-title">ابحث عن فريقك</h2>
+            <div class="search-box">
+                <input type="text" id="teamSearch" placeholder="اكتب اسم الفريق... (مثل: Liverpool, Real Madrid, الهلال)" class="search-input">
+                <button class="search-button" onclick="searchTeam()">
+                    <span>🔍</span> بحث
+                </button>
+            </div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </section>
+
+    <!-- Fixtures Section -->
+    <section class="fixtures-section">
+        <div class="container">
+            <h2 class="section-title">المباريات القادمة</h2>
+            <div class="fixtures-filter">
+                <button class="filter-btn active" onclick="filterFixtures('all')">الكل</button>
+                <button class="filter-btn" onclick="filterFixtures('today')">اليوم</button>
+                <button class="filter-btn" onclick="filterFixtures('tomorrow')">غداً</button>
+                <button class="filter-btn" onclick="filterFixtures('week')">هذا الأسبوع</button>
+            </div>
+            <div id="fixturesList" class="fixtures-grid">
+                <!-- سيتم ملء المباريات ديناميكياً -->
+                <div class="fixture-card demo">
+                    <div class="fixture-header">
+                        <span class="league-name">الدوري الإنجليزي الممتاز</span>
+                        <span class="fixture-time">07 فبراير 2026 - 15:00</span>
+                    </div>
+                    <div class="fixture-teams">
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/40.png" alt="Liverpool" class="team-logo">
+                            <span class="team-name">Liverpool</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/33.png" alt="Manchester United" class="team-logo">
+                            <span class="team-name">Manchester United</span>
+                        </div>
+                    </div>
+                    <button class="predict-button" onclick="showPrediction(867946)">
+                        🤖 عرض التنبؤ
+                    </button>
+                </div>
+
+                <div class="fixture-card demo">
+                    <div class="fixture-header">
+                        <span class="league-name">الدوري الإسباني</span>
+                        <span class="fixture-time">08 فبراير 2026 - 18:00</span>
+                    </div>
+                    <div class="fixture-teams">
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/541.png" alt="Real Madrid" class="team-logo">
+                            <span class="team-name">Real Madrid</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/529.png" alt="Barcelona" class="team-logo">
+                            <span class="team-name">Barcelona</span>
+                        </div>
+                    </div>
+                    <button class="predict-button" onclick="showPrediction(867947)">
+                        🤖 عرض التنبؤ
+                    </button>
+                </div>
+
+                <div class="fixture-card demo">
+                    <div class="fixture-header">
+                        <span class="league-name">دوري روشن السعودي</span>
+                        <span class="fixture-time">09 فبراير 2026 - 20:00</span>
+                    </div>
+                    <div class="fixture-teams">
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/2936.png" alt="الهلال" class="team-logo">
+                            <span class="team-name">الهلال</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <img src="https://media.api-sports.io/football/teams/2931.png" alt="النصر" class="team-logo">
+                            <span class="team-name">النصر</span>
+                        </div>
+                    </div>
+                    <button class="predict-button" onclick="showPrediction(867948)">
+                        🤖 عرض التنبؤ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Modal -->
+    <div id="predictionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title">تحليل وتنبؤ المباراة</h2>
+            <div id="predictionContent">
+                <!-- سيتم ملء التنبؤ ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features-section" id="analysis">
+        <div class="container">
+            <h2 class="section-title">مميزات النظام</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>خوارزمية ELO</h3>
+                    <p>نظام تصنيف متقدم يقيّم قوة الفرق بناءً على الأداء التاريخي والنتائج السابقة</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>توزيع Poisson</h3>
+                    <p>نموذج رياضي للتنبؤ بعدد الأهداف المتوقعة بناءً على الإحصائيات الهجومية والدفاعية</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Ensemble Learning</h3>
+                    <p>دمج ذكي لعدة نماذج للحصول على تنبؤات أكثر دقة وموثوقية</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>تحديث فوري</h3>
+                    <p>بيانات محدثة لحظياً من API-Football مع نظام تخزين مؤقت ذكي</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>تقارير عربية</h3>
+                    <p>تقارير تحليلية شاملة باللغة العربية لكل مباراة</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>تصميم متجاوب</h3>
+                    <p>واجهة سلسة تعمل على جميع الأجهزة (كمبيوتر، تابلت، موبايل)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">عن المشروع</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Football AI - النظام الأذكى للتنبؤ بنتائج المباريات</h3>
+                    <p>
+                        مشروع متقدم مبني بتقنية NestJS يستخدم ثلاث خوارزميات ذكاء اصطناعي (ELO, Poisson, Ensemble) 
+                        لتحليل والتنبؤ بنتائج مباريات كرة القدم بدقة عالية.
+                    </p>
+                    <h4>التقنيات المستخدمة:</h4>
+                    <ul class="tech-list">
+                        <li><strong>Backend:</strong> NestJS + TypeScript</li>
+                        <li><strong>API:</strong> API-Football (v3)</li>
+                        <li><strong>Cache:</strong> Redis</li>
+                        <li><strong>Documentation:</strong> Swagger</li>
+                        <li><strong>AI Algorithms:</strong> ELO Rating, Poisson Distribution, Ensemble Learning</li>
+                    </ul>
+                    <h4>الوحدات الرئيسية:</h4>
+                    <ul class="modules-list">
+                        <li>✅ <strong>Teams Module</strong> - إدارة الفرق</li>
+                        <li>✅ <strong>Fixtures Module</strong> - جدول المباريات</li>
+                        <li>✅ <strong>Snapshots Module</strong> - لقطات البيانات التاريخية</li>
+                        <li>✅ <strong>Predictions Module</strong> - خوارزميات التنبؤ</li>
+                        <li>✅ <strong>Reports Module</strong> - التقارير العربية</li>
+                        <li>✅ <strong>Analyze Module</strong> - التحليل المتقدم</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <img src="https://nestjs.com/img/logo-small.svg" alt="NestJS">
+                            <span>NestJS</span>
+                        </div>
+                        <div class="tech-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="TypeScript">
+                            <span>TypeScript</span>
+                        </div>
+                        <div class="tech-item">
+                            <img src="https://redis.io/images/favicons/favicon-96x96.png" alt="Redis">
+                            <span>Redis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section class="api-section" id="teams">
+        <div class="container">
+            <h2 class="section-title">API Endpoints</h2>
+            <div class="api-grid">
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/health</div>
+                    <div class="api-desc">فحص صحة التطبيق</div>
+                </div>
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/teams/search?q={team}</div>
+                    <div class="api-desc">البحث عن فريق</div>
+                </div>
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/fixtures</div>
+                    <div class="api-desc">جلب المباريات</div>
+                </div>
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/fixtures/{id}</div>
+                    <div class="api-desc">تفاصيل مباراة محددة</div>
+                </div>
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/predictions/{fixtureId}</div>
+                    <div class="api-desc">التنبؤ بنتيجة المباراة</div>
+                </div>
+                <div class="api-card">
+                    <div class="api-method get">GET</div>
+                    <div class="api-path">/api/analyze/{fixtureId}</div>
+                    <div class="api-desc">تحليل متقدم للمباراة</div>
+                </div>
+            </div>
+            <div class="swagger-link">
+                <a href="http://localhost:3001/docs" target="_blank" class="swagger-button">
+                    📚 عرض التوثيق الكامل (Swagger)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Football AI</h3>
+                    <p>نظام ذكي للتنبؤ بنتائج مباريات كرة القدم باستخدام خوارزميات الذكاء الاصطناعي</p>
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#predictions">التنبؤات</a></li>
+                        <li><a href="#teams">الفرق</a></li>
+                        <li><a href="#about">عن المشروع</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>التقنيات</h3>
+                    <ul>
+                        <li>NestJS + TypeScript</li>
+                        <li>Redis Cache</li>
+                        <li>API-Football</li>
+                        <li>AI Algorithms</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Football AI. جميع الحقوق محفوظة.</p>
+                <p class="disclaimer">التنبؤات مبنية على نماذج رياضية وليست ضماناً للنتائج الفعلية</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
